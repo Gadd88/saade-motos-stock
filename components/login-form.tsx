@@ -17,6 +17,7 @@ export function LoginForm() {
   const [error, setError] = useState("")
 
   const login = useAuthStore((state) => state.login)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,8 +26,8 @@ export function LoginForm() {
     setError("")
 
     try {
-      const success = await login(email, password)
-      if (success) {
+      await login(email, password)
+      if (isAuthenticated) {
         router.push("/admin")
       } else {
         setError("Email o Password inválidos")

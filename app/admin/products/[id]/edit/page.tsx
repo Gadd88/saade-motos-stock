@@ -6,6 +6,7 @@ interface EditProductPageProps {
     id: string
   }
 }
+export const dynamic = "force-dynamic";
 
 export default function EditProductPage({ params }: EditProductPageProps) {
   return (

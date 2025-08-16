@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Product from "@/components/models/Product";
+import bcrypt from 'bcrypt'
 
 export async function GET(){
+
     try{
         const db = await dbConnect()
         const productos = await Product.find()
