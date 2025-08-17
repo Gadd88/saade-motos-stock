@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import dbConnect from "@/lib/mongodb"
-import Product from "@/components/models/Product"
+import Product from "@/models/Product"
 import mongoose from "mongoose"
 
 // GET /api/products/[id] - Get a single product

@@ -27,6 +27,7 @@ export function LoginForm() {
 
     try {
       await login(email, password)
+      console.log(isAuthenticated)
       if (isAuthenticated) {
         router.push("/admin")
       } else {

@@ -1,4 +1,4 @@
-import UserModel, { IUser } from '@/components/models/User'
+import UserModel, { IUser } from '@/models/User'
 import dbConnect from '@/lib/mongodb'
 import { type NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
@@ -6,15 +6,13 @@ import bcrypt from 'bcrypt'
 
 
 
-export async function POST(req: Request, res: Response){
+export async function POST(req: Request){
 
     try{
         const { email, password }= await req.json()
         await dbConnect()
         const user = await UserModel.findOne({email})
         if(!user) return NextResponse.json({message: 'Usuario no encontrado'}, {status: 404})
-        const hash = await bcrypt.hash('TitoSaade1996', 10)
-        console.log("pass"+password, "hash"+hash, "user"+user)
         const match = await bcrypt.compare(password, user.password)
         
         //BCRYPT

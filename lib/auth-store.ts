@@ -40,7 +40,7 @@ export const useAuthStore = create<AuthState>()(
         })
         if(res.ok){
           const data = await fetch('/api/auth/me')
-          const user = await data.json()
+          const { user } = await data.json()
           set({ user, isAuthenticated: true })
         }else{
           console.log("Login Fallido")
@@ -54,8 +54,15 @@ export const useAuthStore = create<AuthState>()(
         // }
         // return false
       },
-      logout: () => {
-        set({ user: null, isAuthenticated: false })
+      logout: async () => {
+        try{
+          await fetch('/api/auth/logout', {
+            method: "POST"
+          })
+          set({ user: null, isAuthenticated: false })
+        }catch(error){
+          console.error("Error en LOGOUT")
+        }
       },
     }),
     {

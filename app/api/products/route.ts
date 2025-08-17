@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import dbConnect from "@/lib/mongodb"
-import Product from "@/components/models/Product"
+import Product from "@/models/Product"
 
 // GET /api/products - Get all products
 export async function GET() {
