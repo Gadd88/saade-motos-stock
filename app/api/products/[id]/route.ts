@@ -8,19 +8,20 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   try {
     await dbConnect()
 
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
-      return NextResponse.json({ success: false, error: "Invalid product ID" }, { status: 400 })
+    const { id } = await params
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ success: false, error: "ID inválido" }, { status: 400 })
     }
 
-    const product = await Product.findById(params.id)
+    const product = await Product.findById(id)
     if (!product) {
-      return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 })
+      return NextResponse.json({ success: false, error: "Producto no encontrado" }, { status: 404 })
     }
 
     return NextResponse.json({ success: true, data: product })
   } catch (error) {
     console.error("Error fetching product:", error)
-    return NextResponse.json({ success: false, error: "Failed to fetch product" }, { status: 500 })
+    return NextResponse.json({ success: false, error: "Error al cargar producto" }, { status: 500 })
   }
 }
 
@@ -28,25 +29,26 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     await dbConnect()
-
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
-      return NextResponse.json({ success: false, error: "Invalid product ID" }, { status: 400 })
+    
+    const { id } = await params
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ success: false, error: "ID inválido" }, { status: 400 })
     }
 
     const body = await request.json()
-    const product = await Product.findByIdAndUpdate(params.id, body, {
+    const product = await Product.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true,
     })
 
     if (!product) {
-      return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 })
+      return NextResponse.json({ success: false, error: "Producto no encontrado" }, { status: 404 })
     }
 
     return NextResponse.json({ success: true, data: product })
   } catch (error: any) {
-    console.error("Error updating product:", error)
-    return NextResponse.json({ success: false, error: error.message || "Failed to update product" }, { status: 400 })
+    console.error("Error actualizando el producto:", error)
+    return NextResponse.json({ success: false, error: error.message || "Error al actualizar el producto" }, { status: 400 })
   }
 }
 
@@ -54,19 +56,19 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     await dbConnect()
-
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
-      return NextResponse.json({ success: false, error: "Invalid product ID" }, { status: 400 })
+    const { id } = await params
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ success: false, error: "ID inválido" }, { status: 400 })
     }
 
-    const product = await Product.findByIdAndDelete(params.id)
+    const product = await Product.findByIdAndDelete(id)
     if (!product) {
-      return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 })
+      return NextResponse.json({ success: false, error: "Producto no encontrado" }, { status: 404 })
     }
 
     return NextResponse.json({ success: true, data: product })
   } catch (error) {
-    console.error("Error deleting product:", error)
-    return NextResponse.json({ success: false, error: "Failed to delete product" }, { status: 500 })
+    console.error("Error al borrar el producto..", error)
+    return NextResponse.json({ success: false, error: "Fallo al eliminar el producto" }, { status: 500 })
   }
 }

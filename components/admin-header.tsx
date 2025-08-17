@@ -10,6 +10,7 @@ export function AdminHeader() {
 
   const handleLogout = () => {
     logout()
+    useAuthStore.persist.clearStorage()
     window.location.href = "/"
   }
 

@@ -8,10 +8,13 @@ interface EditProductPageProps {
 }
 export const dynamic = "force-dynamic";
 
-export default function EditProductPage({ params }: EditProductPageProps) {
+export default async function EditProductPage({ params }: EditProductPageProps) {
+
+  const { id } = await params
+
   return (
     <ProtectedRoute>
-      <ProductForm productId={params.id} />
+      <ProductForm productId={id} />
     </ProtectedRoute>
   )
 }
