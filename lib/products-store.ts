@@ -40,7 +40,7 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
         set({ error: result.error, isLoading: false })
       }
     } catch (error) {
-      set({ error: "Failed to fetch products", isLoading: false })
+      set({ error: "Error al obtener productos", isLoading: false })
     }
   },
 
@@ -65,7 +65,7 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
         return false
       }
     } catch (error) {
-      set({ error: "Failed to add product" })
+      set({ error: "Error al agregar el producto" })
       return false
     }
   },
@@ -100,6 +100,9 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
     try {
       const response = await fetch(`/api/products/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
 
       const result = await response.json()
@@ -113,7 +116,7 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
         return false
       }
     } catch (error) {
-      set({ error: "Failed to delete product" })
+      set({ error: "Error al eliminar producto" })
       return false
     }
   },

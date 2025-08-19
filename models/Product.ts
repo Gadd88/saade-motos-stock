@@ -42,8 +42,7 @@ const ProductSchema = new Schema<IProduct>(
     },
     category: {
       type: String,
-      required: [true, "Product category is required"],
-      enum: ["Engine Parts", "Brakes", "Lighting", "Exhaust", "Drive Train", "Accessories", "Electrical", "Suspension"],
+      default: "varios",
     },
   },
   {

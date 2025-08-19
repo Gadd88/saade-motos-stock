@@ -19,14 +19,7 @@ interface ProductFormProps {
 }
 
 const categories = [
-  "Engine Parts",
-  "Brakes",
-  "Lighting",
-  "Exhaust",
-  "Drive Train",
-  "Accessories",
-  "Electrical",
-  "Suspension",
+  "varios",
 ]
 
 export function ProductForm({ productId }: ProductFormProps) {
@@ -91,11 +84,11 @@ export function ProductForm({ productId }: ProductFormProps) {
       if (success) {
         router.push("/admin/inventory")
       } else {
-        setError("Failed to save product. Please try again.")
+        setError("Error al guardar. Intente nuevamente")
       }
     } catch (error) {
-      console.error("Error saving product:", error)
-      setError("An unexpected error occurred.")
+      console.error("Error guardando el producto:", error)
+      setError("Ocurrió un error inesperado.")
     } finally {
       setIsLoading(false)
     }
@@ -103,7 +96,7 @@ export function ProductForm({ productId }: ProductFormProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <AdminHeader />
+      {/* <AdminHeader /> */}
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto space-y-8">
@@ -160,7 +153,6 @@ export function ProductForm({ productId }: ProductFormProps) {
                   id="category"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  required
                   className="w-full neo-button h-10 px-3 py-2 bg-input border-4 border-border text-sm"
                 >
                   <option value="">Selecciona una Categoria</option>
