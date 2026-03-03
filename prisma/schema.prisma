@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model usuario {
+  id             Int      @id @default(autoincrement())
+  firebaseId     Int
+  email          String
+  nombre         String
+}
+
+model itemventa {
+  id             Int      @id @default(autoincrement())
+  idVenta        Int
+  idProducto     Int
+  cantidad       Int
+  precioUnitario Float
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @db.Timestamptz(6)
+  precioCompra   Float    @default(0)
+  products       products @relation(fields: [idProducto], references: [id], onDelete: NoAction)
+  ventas         ventas   @relation(fields: [idVenta], references: [id], onDelete: Cascade)
+}
+
+model products {
+  id           Int         @id @default(autoincrement())
+  name         String      @db.VarChar(100)
+  priceBuy     Float
+  priceSale    Float
+  quantity     Int
+  availability Boolean     @default(true)
+  createdAt    DateTime    @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime    @updatedAt @db.Timestamptz(6)
+  itemventa    itemventa[]
+}
+
+model ventas {
+  id           Int         @id @default(autoincrement())
+  fecha        DateTime    @db.Timestamptz(6)
+  total        Float
+  createdAt    DateTime    @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime    @db.Timestamptz(6)
+  totalGastado Float       @default(0)
+  itemventa    itemventa[]
+}

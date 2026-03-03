@@ -1,6 +1,6 @@
 "use client"
 
-import { useProductsStore } from "@/lib/products-store"
+import { useProductsStore } from "@/lib/stores/products-store"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -11,19 +11,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Trash2 } from "lucide-react"
+import { products } from "@/lib/generated/prisma/client"
 
 interface ProductDeleteDialogProps {
-  productId: string | null
+  productId: products['id'] | null
   onClose: () => void
 }
 
 export function ProductDeleteDialog({ productId, onClose }: ProductDeleteDialogProps) {
-  const { deleteProduct, getProduct } = useProductsStore()
-  const product = productId ? getProduct(productId) : null
+  const { eliminarProducto, obtenerProductoPorId } = useProductsStore()
+  const product = productId ? obtenerProductoPorId(productId) : null
 
   const handleDelete = async () => {
     if (productId) {
-      await deleteProduct(productId)
+      await eliminarProducto(productId)
       onClose()
     }
   }

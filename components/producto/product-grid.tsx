@@ -1,23 +1,23 @@
 "use client"
 
-import { useEffect } from "react"
-import { ProductCard } from "@/components/product-card"
-import { useProductsStore } from "@/lib/products-store"
+import { ProductCard } from "@/components/producto/product-card"
+import { useProductsStore } from "@/lib/stores/products-store"
 import { Loader2 } from "lucide-react"
+import { useEffect } from "react"
 
 export function ProductGrid() {
-  const { products, isLoading, error, fetchProducts } = useProductsStore()
+  const { products, isLoading, error, listarProductos } = useProductsStore()
 
   useEffect(() => {
-    fetchProducts()
-  }, [fetchProducts])
+    listarProductos()
+  }, [])
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-          <p className="text-muted-foreground">Loading products...</p>
+          <p className="text-muted-foreground">Cargando productos...</p>
         </div>
       </div>
     )
@@ -26,10 +26,11 @@ export function ProductGrid() {
   if (error) {
     return (
       <div className="neo-card p-6 bg-destructive/10 border-destructive text-center">
-        <p className="text-destructive">Error loading products: {error}</p>
+        <p className="text-destructive">Error cargando productos: {error}</p>
       </div>
     )
   }
+  console.log(products)
 
   return (
     <div className="space-y-6">
@@ -40,9 +41,10 @@ export function ProductGrid() {
         <div className="text-sm text-muted-foreground">{products.length} productos</div>
       </div>
 
+      {/* <div className="flex flex-col gap-3"> */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <ProductCard key={product._id} product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>

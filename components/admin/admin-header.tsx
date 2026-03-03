@@ -1,18 +1,12 @@
 "use client"
 
-import { useAuthStore } from "@/lib/auth-store"
+import { useAuthStore } from "@/lib/stores/auth-store"
 import { Button } from "@/components/ui/button"
 import { LogOut, Package, Plus, Home } from "lucide-react"
 import Link from "next/link"
 
 export function AdminHeader() {
-  const { user, logout } = useAuthStore()
-
-  const handleLogout = () => {
-    logout()
-    useAuthStore.persist.clearStorage()
-    window.location.href = "/"
-  }
+  const { logout } = useAuthStore()
 
   return (
     <header className="border-b-4 border-border bg-card">
@@ -20,7 +14,7 @@ export function AdminHeader() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/admin" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-secondary-foreground neo-button"></div>
+              <div className="w-8 h-8 bg-red-500 neo-button"></div>
               <span className="neo-heading text-xl" style={{ fontFamily: "var(--font-montserrat)" }}>
                 SAADE MOTOS
               </span>
@@ -36,7 +30,7 @@ export function AdminHeader() {
                   DASHBOARD
                 </Button>
               </Link>
-              <Link href="/admin/inventory">
+              <Link href="/admin/stock">
                 <Button
                   variant="ghost"
                   className="neo-button font-semibold bg-transparent"
@@ -46,7 +40,7 @@ export function AdminHeader() {
                   INVENTARIO
                 </Button>
               </Link>
-              <Link href="/admin/products/add">
+              <Link href="/admin/productos/agregar">
                 <Button
                   variant="ghost"
                   className="neo-button font-semibold bg-transparent"
@@ -59,9 +53,8 @@ export function AdminHeader() {
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground hidden md:block">Bienvenido, {user?.name}</span>
             <Button
-              onClick={handleLogout}
+              onClick={logout}
               variant="outline"
               className="neo-button font-semibold bg-transparent"
               style={{ fontFamily: "var(--font-montserrat)" }}

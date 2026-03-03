@@ -1,8 +1,17 @@
 import { LoginForm } from "@/components/login-form"
 import { Button } from "@/components/ui/button"
+import { cookies } from "next/headers"
 import Link from "next/link"
+import { redirect } from "next/navigation"
+import React from "react"
 
-export default function LoginPage() {
+export default async function LoginPage() {
+
+  const cookieStore = await cookies()
+  const session = cookieStore.get("session")
+
+  if(session) redirect("/admin")
+    
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="border-b-4 border-border bg-card">
@@ -35,18 +44,7 @@ export default function LoginPage() {
             </h1>
             <p className="text-muted-foreground">Ingresa a tu sistema de stock</p>
           </div>
-
           <LoginForm />
-
-          {/* <div className="neo-card p-4 bg-muted">
-            <h3 className="neo-heading text-sm mb-2" style={{ fontFamily: "var(--font-montserrat)" }}>
-              DEMO CREDENTIALS
-            </h3>
-            <div className="text-xs space-y-1 text-muted-foreground">
-              <div>Email: admin@saademotos.com</div>
-              <div>Password: admin123</div>
-            </div>
-          </div> */}
         </div>
       </main>
     </div>
