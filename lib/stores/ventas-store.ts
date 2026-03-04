@@ -1,6 +1,7 @@
 import { create } from "zustand"
-import { Prisma, ventas } from "../generated/prisma/client"
-import { obtenerVentas } from "@/services/ventas-services"
+import { Prisma } from "../generated/prisma/client"
+import { crearVenta, obtenerVentas } from "@/services/ventas-services"
+import { ItemCarrito } from "./carrito-store"
 
 export type VentaConItems = Prisma.ventasGetPayload<{
   include: {
@@ -15,7 +16,7 @@ interface VentaState {
     isLoading: boolean
     error: string | null
     listarVentas: () => Promise<void>
-    generarVenta: () => Promise<boolean>
+    generarVenta: (productos: ItemCarrito[]) => Promise<void>
 }
 
 export const useVentaStore = create<VentaState>((set, get) => ({
@@ -32,8 +33,9 @@ export const useVentaStore = create<VentaState>((set, get) => ({
             console.log(error)
         }
     },
-    generarVenta: async () => {
-        return true
+    generarVenta: async (productos) => {
+        const nuevaVenta = await crearVenta(productos)
+        console.log(nuevaVenta)
     }
 
 }))

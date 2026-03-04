@@ -12,7 +12,7 @@ interface CarritoState {
     vaciarCarrito: () => void
 }
 
-interface ItemCarrito extends products {
+export interface ItemCarrito extends products {
     stockMaximo: number;
 }
 

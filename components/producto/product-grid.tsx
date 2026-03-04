@@ -30,7 +30,6 @@ export function ProductGrid() {
       </div>
     )
   }
-  console.log(products)
 
   return (
     <div className="space-y-6">

@@ -40,28 +40,28 @@ export function AdminHeader() {
                   INVENTARIO
                 </Button>
               </Link>
-              <Link href="/admin/productos/agregar">
+              <Link href="/admin/ventas/nueva-venta">
                 <Button
                   variant="ghost"
-                  className="neo-button font-semibold bg-transparent"
+                  className="neo-button font-semibold bg-sky-500"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  AGREGAR PRODUCTO
+                  NUEVA VENTA
                 </Button>
               </Link>
             </nav>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={logout}
-              variant="outline"
-              className="neo-button font-semibold bg-transparent"
-              style={{ fontFamily: "var(--font-montserrat)" }}
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              LOGOUT
-            </Button>
+            <div className="neo-card flex items-center gap-4">
+              <Button
+                onClick={logout}
+                variant="outline"
+                className="neo-button font-semibold bg-transparent"
+                style={{ fontFamily: "var(--font-montserrat)" }}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                LOGOUT
+              </Button>
+            </div>
           </div>
         </div>
       </div>

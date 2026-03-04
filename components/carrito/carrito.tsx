@@ -30,6 +30,11 @@ export const Carrito = () => {
         setIsActive(false);
     };
 
+    const handleVenta = () => {
+        generarVenta(carrito)
+        handleVaciar()
+    }
+
     const handleActive = () => {
         if(!carrito.length) return null
 
@@ -219,7 +224,7 @@ export const Carrito = () => {
                                     </div>
                                     <div className="grid grid-cols-2 gap-2">
                                         <button
-                                            onClick={generarVenta}
+                                            onClick={handleVenta}
                                             disabled={
                                                 isLoading ||
                                                 carrito.length === 0
