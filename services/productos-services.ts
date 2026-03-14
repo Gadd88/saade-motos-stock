@@ -67,12 +67,12 @@ export const deleteProduct = async (id: products["id"]): Promise<boolean> => {
             "Content-Type": "application/json",
         },
     });
+    const result = await response.json();
 
     if (!response.ok) {
-        throw new Error("Ocurrió un error actualizando el producto");
+        throw new Error(`Ocurrió un error actualizando el producto, ${result.error}`);
     }
 
-    const result = await response.json();
 
     return result;
 };

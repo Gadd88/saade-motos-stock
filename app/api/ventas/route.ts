@@ -40,7 +40,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     where: { id: item.id },
                 });
 
-                if (!producto || producto.quantity <= item.quantity) {
+                if (!producto || producto.quantity < item.quantity) {
                     throw new Error(
                         `Producto inválido o sin stock suficiente: ID - ${item.id}`,
                     );

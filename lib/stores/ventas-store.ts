@@ -1,7 +1,8 @@
 import { create } from "zustand"
 import { Prisma } from "../generated/prisma/client"
 import { crearVenta, obtenerVentas } from "@/services/ventas-services"
-import { ItemCarrito } from "./carrito-store"
+import { ItemCarrito, useCarritoState } from "./carrito-store"
+import { toast } from "sonner"
 
 export type VentaConItems = Prisma.ventasGetPayload<{
   include: {
@@ -34,8 +35,22 @@ export const useVentaStore = create<VentaState>((set, get) => ({
         }
     },
     generarVenta: async (productos) => {
-        const nuevaVenta = await crearVenta(productos)
-        console.log(nuevaVenta)
+        set({isLoading: true})
+        const toastId = toast.loading("Procesando venta...")
+        try{
+            const nuevaVenta = await crearVenta(productos)
+            toast.success(`Venta creada correctamente. Venta: ${nuevaVenta.idVentas}`, {id: toastId})
+
+            const { vaciarCarrito, setIsOpen } = useCarritoState.getState()
+            setIsOpen(false)
+            vaciarCarrito()
+
+        }catch(err){
+            toast.error("Error al generar la venta", {id: toastId})
+        }finally{
+            set({isLoading: false, error: null})
+        }
+        // console.log(nuevaVenta)
     }
 
 }))

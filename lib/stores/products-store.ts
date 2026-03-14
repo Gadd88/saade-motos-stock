@@ -6,6 +6,7 @@ import {
     fetchProducts,
     updateProduct,
 } from "@/services/productos-services";
+import { toast } from "sonner";
 
 interface ProductsState {
     products: products[];
@@ -55,8 +56,10 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
 
     editarProducto: async (id, updates) => {
         set({ isLoading: true, error: null });
+        const toastId = toast.loading("Actualizando producto")
         try {
             const productoActualizado = await updateProduct(id, updates);
+            toast.success("Producto actualizado", {id: toastId})
             set((state) => ({
                 products: state.products.map((p) =>
                     p.id === id ? productoActualizado : p,
@@ -65,6 +68,7 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
             }));
             return true;
         } catch (error) {
+            toast.error(`Ocurrió un error, ${error}`, {id: toastId})
             set({
                 error: `Error al actualizar el producto, ${error}`,
                 isLoading: false,
@@ -75,9 +79,10 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
 
     eliminarProducto: async (id) => {
         set({ isLoading: true, error: null });
+        const toastId = toast.loading("Eliminando producto")
         try {
             const resultado = await deleteProduct(id);
-
+            toast.success("Producto eliminado", {id: toastId})
             set((state) => ({
                 products: state.products.filter((p) => p.id !== id),
                 isLoading: false,
@@ -85,6 +90,7 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
 
             return true;
         } catch (error) {
+            toast.error(`Ocurrió un error, ${error}`, {id: toastId})
             set({ error: "Error al eliminar producto", isLoading: false });
             return false;
         }

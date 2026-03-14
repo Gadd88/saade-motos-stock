@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { products } from "../generated/prisma/client";
+import { toast } from "sonner";
 
 interface CarritoState {
     carrito: ItemCarrito[];
@@ -9,7 +10,9 @@ interface CarritoState {
         cantidad: products["quantity"],
     ) => void;
     eliminarItem: (id: products["id"]) => void;
-    vaciarCarrito: () => void
+    vaciarCarrito: () => void;
+    isOpen: boolean;
+    setIsOpen: (v: boolean) => void
 }
 
 export interface ItemCarrito extends products {
@@ -18,6 +21,8 @@ export interface ItemCarrito extends products {
 
 export const useCarritoState = create<CarritoState>((set, get) => ({
     carrito: [],
+    isOpen: false,
+    setIsOpen: (v) => set({isOpen: v}),
     agregarItemCarrito: (products) => {
         const itemsCarrito = get().carrito;
         const itemExists = itemsCarrito.find((item) => item.id === products.id);
@@ -42,6 +47,7 @@ export const useCarritoState = create<CarritoState>((set, get) => ({
                 ],
             });
         }
+        toast.success("Item agregado al carrito")
     },
     editarCantidad: (id, cantidad) => {
         const carritoActual = get().carrito;
@@ -60,10 +66,12 @@ export const useCarritoState = create<CarritoState>((set, get) => ({
             );
             set({ carrito: nuevoCarrito });
         }
+        toast.success("Cantidad editada")
     },
     eliminarItem: (id) => {
         const nuevoCarrito = get().carrito.filter((item) => item.id !== id);
         set({ carrito: nuevoCarrito });
+        toast.warning("Item eliminado")
     },
     vaciarCarrito: () => {
         set({carrito: []})

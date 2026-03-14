@@ -9,7 +9,7 @@ interface ViewOneProductProps {
 export const dynamic = "force-dynamic";
 
 export default async function ViewOneProduct({ params }: ViewOneProductProps) {
-    const { id } = params;
+    const { id } = await params;
     const response = await fetch(`api/products/${id}`);
     const product: products = await response.json();
 

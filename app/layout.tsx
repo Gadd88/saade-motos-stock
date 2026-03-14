@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthInitializer } from "@/components/auth-zustand";
+import { Toaster } from "sonner";
 
 const montserrat = Montserrat({
     subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
         >
             <body className="min-h-screen bg-background font-sans">
                 <AuthInitializer>
+                    <Toaster position="top-center"/>
                     {children}
                     <div id="modal" />
                 </AuthInitializer>

@@ -26,7 +26,7 @@ export const ProductCardStock = ({product, onDelete}: ProductCardStockType) => {
                             </h3>
                         </div>
                         <div className="flex items-center gap-2">
-                            {product.quantity <= 5 ? (
+                            {product.quantity <= 2 ? (
                                 <Badge
                                     variant="secondary"
                                     className="bg-yellow-400 text-black border-black"

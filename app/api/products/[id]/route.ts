@@ -2,24 +2,38 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  const body = await req.json();
-  const product = await prisma.products.update({
-    where: { id: Number(params.id) },
-    data: body,
-  });
-  return NextResponse.json(product);
+export async function PUT(
+    req: Request,
+    { params }: { params: { id: string } },
+) {
+    const { id } = await params;
+    const body = await req.json();
+    const product = await prisma.products.update({
+        where: { id: Number(id) },
+        data: body,
+    });
+    return NextResponse.json(product);
 }
 
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
-  try {
-    await prisma.products.delete({ where: { id: Number(params.id) } });
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    return NextResponse.json({ ok: false, error: "Error al eliminar el producto"}, {status: 500})
-  }
+export async function DELETE(
+    _: Request,
+    { params }: { params: { id: string } },
+) {
+    const { id } = await params;
+    try {
+        await prisma.products.update({
+            where: { id: Number(id) },
+            data: { availability: false },
+        });
+        // await prisma.products.delete({ where: { id: Number(params.id) } });
+        return NextResponse.json({ ok: true });
+    } catch (error) {
+        return NextResponse.json(
+            { ok: false, error: `Error al eliminar el producto, ${error}` },
+            { status: 500 },
+        );
+    }
 }
-
 
 // import { type NextRequest, NextResponse } from "next/server"
 // import dbConnect from "@/lib/mongodb"
@@ -52,7 +66,7 @@ export async function DELETE(_: Request, { params }: { params: { id: string } })
 // export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
 //   try {
 //     await dbConnect()
-    
+
 //     const { id } = await params
 //     if (!mongoose.Types.ObjectId.isValid(id)) {
 //       return NextResponse.json({ success: false, error: "ID inválido" }, { status: 400 })

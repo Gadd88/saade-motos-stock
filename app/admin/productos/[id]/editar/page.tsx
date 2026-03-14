@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function EditProductPage({
     params,
 }: EditProductPageProps) {
-    const { id } = params;
+    const { id } = await params;
 
     return <ProductForm productId={Number(id)} />;
 }
