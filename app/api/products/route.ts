@@ -2,6 +2,10 @@ import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
+
+    console.log("DATABASE_URL presente:", !!process.env.DATABASE_URL);
+  console.log("DATABASE_URL longitud:", process.env.DATABASE_URL?.length);
+  
     const products = await prisma.products.findMany({
         where: { availability: true },
     });

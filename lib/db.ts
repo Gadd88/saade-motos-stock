@@ -1,5 +1,5 @@
 // lib/prisma.ts
-import { Pool, neonConfig } from '@neondatabase/serverless' 
+import { Pool, neonConfig } from '@neondatabase/serverless'
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "./generated/prisma/client";
 import ws from 'ws'
@@ -14,35 +14,39 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-const getPrismaClient = () => {
-  const connectionString = process.env.DATABASE_URL;
+const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
 
-  // Validación extra para evitar el error de "localhost"
-  if (!connectionString) {
-    throw new Error("DATABASE_URL no está definida en las variables de entorno.");
-  }
+export const prisma =
+  globalForPrisma.prisma ?? new PrismaClient({ adapter, log:["error", "query", "warn"] });
 
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool as any);
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-  return new PrismaClient({ adapter });
-};
+// function createPrismaClient() {
+//   const url = process.env.DATABASE_URL;
 
-export const prisma = globalForPrisma.prisma ?? getPrismaClient();
+//   if (!url) {
+//     // Esto detendrá el proceso con un mensaje claro en los logs de Vercel
+//     throw new Error("❌ ERROR: DATABASE_URL no detectada en el entorno.");
+//   }
+
+//   // Si la URL existe, configuramos el adaptador
+//   const pool = new Pool({ connectionString: url });
+//   const adapter = new PrismaNeon(pool as any);
+
+//   return new PrismaClient({ 
+//     adapter,
+//     log: ['error', 'warn'] 
+//   });
+// }
+
+// export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
 // export const prisma =
 //   globalForPrisma.prisma ?? new PrismaClient({ adapter, log: ["error", "query", "warn"] });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 
 // const globalForPrisma = globalThis as unknown as {
 //   prisma: PrismaClient | undefined;
 // };
-
-// const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL! });
-
-// export const prisma =
-//   globalForPrisma.prisma ?? new PrismaClient({ adapter });
-
-// if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
