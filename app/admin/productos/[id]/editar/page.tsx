@@ -17,5 +17,5 @@ export default async function EditProductPage({
 
     if(!id || !producto) redirect('/admin/stock')
 
-    return <ProductForm productId={Number(id)} productoData={producto} />;
+    return <ProductForm productId={Number(id)} productoData={JSON.parse(JSON.stringify(producto))} />;
 }
