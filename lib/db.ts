@@ -14,12 +14,24 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-const connectionString = process.env.DATABASE_URL;
-const pool = new Pool({ connectionString });
-const adapter = new PrismaNeon(pool as any);
+const getPrismaClient = () => {
+  const connectionString = process.env.DATABASE_URL;
 
-export const prisma =
-  globalForPrisma.prisma ?? new PrismaClient({ adapter, log: ["error", "query", "warn"] });
+  // Validación extra para evitar el error de "localhost"
+  if (!connectionString) {
+    throw new Error("DATABASE_URL no está definida en las variables de entorno.");
+  }
+
+  const pool = new Pool({ connectionString });
+  const adapter = new PrismaNeon(pool as any);
+
+  return new PrismaClient({ adapter });
+};
+
+export const prisma = globalForPrisma.prisma ?? getPrismaClient();
+
+// export const prisma =
+//   globalForPrisma.prisma ?? new PrismaClient({ adapter, log: ["error", "query", "warn"] });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
