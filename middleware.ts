@@ -6,6 +6,8 @@ export const middleware = (req: NextRequest, res: NextResponse) => {
 
     const session = req.cookies.get('session')
 
+    console.log(`METODO: ${req.method}, URL:${req.url}`)
+
     if(req.nextUrl.pathname.startsWith('/admin') && !session){
         return NextResponse.redirect(new URL('/login', req.url))
     }

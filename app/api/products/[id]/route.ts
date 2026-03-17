@@ -8,6 +8,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     try{
         const producto = await prisma.products.findUnique({ where: { id: Number(id) } })
         if (!producto) return NextResponse.json("Producto no encontrado", { status: 404 })
+            console.log(producto)
         return NextResponse.json(JSON.parse(JSON.stringify(producto)))
     }catch(error){
         return NextResponse.json({error: `Ocurrió un error en el servidor, ${error}`}, {status: 500})

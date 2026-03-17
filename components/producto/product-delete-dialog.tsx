@@ -24,7 +24,6 @@ export function ProductDeleteDialog({ productId, onClose }: ProductDeleteDialogP
 
   const handleDelete = async () => {
     if (productId) {
-      console.log(productId)
       await eliminarProducto(productId)
       onClose()
     }

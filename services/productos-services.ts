@@ -48,7 +48,9 @@ export const updateProduct = async (
         });
 
         if (!response.ok) {
-            throw new Error("Ocurrió un error actualizando el producto");
+            const errorText = await response.text()
+            console.error(`Respuesta del servidor: ${errorText}`)
+            throw new Error(`Error: ${response.status}:${errorText}`);
         }
 
         const result = await response.json();
@@ -68,10 +70,11 @@ export const deleteProduct = async (id: products["id"]): Promise<boolean> => {
         },
     });
     const result = await response.json();
-    console.log(result)
 
     if (!response.ok) {
-        throw new Error(`Ocurrió un error actualizando el producto, ${result.error}`);
+        const errorText = await response.text()
+        console.error(`Respuesta del servidor: ${errorText}`)
+        throw new Error(`Error: ${response.status}:${errorText}`);
     }
 
     return result;
