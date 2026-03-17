@@ -63,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
         //   </div>
         // </div>
 
-        <div className="neo-card flex flex-col sm:flex-row items-stretch hover:shadow-[6px_6px_0px_0px_theme(colors.border)] transition-all duration-200 overflow-hidden">
+        <div className="neo-card flex flex-col sm:flex-row items-stretch hover:shadow-[6px_6px_0px_0px_theme(--colors-border)] transition-all duration-200 overflow-hidden">
             {/* Contenido */}
             <div className="flex flex-1 flex-col justify-between p-3 gap-3 min-w-0">
                 {/* Nombre + precio */}
