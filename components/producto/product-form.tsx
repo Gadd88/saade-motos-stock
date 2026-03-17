@@ -14,6 +14,7 @@ import { products } from "@/lib/generated/prisma/client";
 
 interface ProductFormProps {
     productId?: products["id"];
+    productoData?: products
 }
 
 type FormDataType = {
@@ -23,36 +24,36 @@ type FormDataType = {
     quantity: number
 }
 
-export function ProductForm({ productId }: ProductFormProps) {
+export function ProductForm({ productId, productoData }: ProductFormProps) {
     const router = useRouter();
     const {
         agregarProducto,
         editarProducto,
-        obtenerProductoPorId,
+        // obtenerProductoPorId,
     } = useProductsStore();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
     const [formData, setFormData] = useState<FormDataType>({
-        name: "",
-        priceBuy: 0,
-        priceSale: 0,
-        quantity: 0
+        name: productoData?.name ?? "",
+        priceBuy: productoData?.priceBuy ?? 0,
+        priceSale: productoData?.priceSale ?? 0,
+        quantity: productoData?.quantity ?? 0
     });
 
     const isEditing = !!productId;
-    const existingProduct = productId ? obtenerProductoPorId(productId) : null;
+    // const existingProduct = productId ? obtenerProductoPorId(productId) : null;
 
-    useEffect(() => {
-        if (existingProduct) {
-            setFormData({
-                name: existingProduct.name,
-                priceBuy: Number(existingProduct.priceBuy),
-                priceSale: Number(existingProduct.priceSale),
-                quantity: Number(existingProduct.quantity),
-            });
-        }
-    }, [existingProduct]);
+    // useEffect(() => {
+    //     if (existingProduct) {
+    //         setFormData({
+    //             name: existingProduct.name,
+    //             priceBuy: Number(existingProduct.priceBuy),
+    //             priceSale: Number(existingProduct.priceSale),
+    //             quantity: Number(existingProduct.quantity),
+    //         });
+    //     }
+    // }, [existingProduct]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

@@ -44,12 +44,15 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
         productData: Omit<products, "id" | "createdAt" | "updatedAt">,
     ) => {
         set({ isLoading: true, error: null });
+        const toastId = toast.loading("Agregando producto...")
         try {
             await addProduct(productData);
+            toast.success("Producto agregado", {id: toastId})
             await get().listarProductos();
             return true;
         } catch (error) {
             set({ error: `Error al agregar el producto, ${error}` });
+            toast.error(`Ocurrió un error, ${error}`, {id: toastId})
             return false;
         }
     },
@@ -81,7 +84,7 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
         set({ isLoading: true, error: null });
         const toastId = toast.loading("Eliminando producto")
         try {
-            const resultado = await deleteProduct(id);
+            await deleteProduct(id);
             toast.success("Producto eliminado", {id: toastId})
             set((state) => ({
                 products: state.products.filter((p) => p.id !== id),

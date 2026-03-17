@@ -68,11 +68,11 @@ export const deleteProduct = async (id: products["id"]): Promise<boolean> => {
         },
     });
     const result = await response.json();
+    console.log(result)
 
     if (!response.ok) {
         throw new Error(`Ocurrió un error actualizando el producto, ${result.error}`);
     }
-
 
     return result;
 };
