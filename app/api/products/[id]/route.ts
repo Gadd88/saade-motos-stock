@@ -2,6 +2,18 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+
+    try{
+        const producto = await prisma.products.findUnique({ where: { id: Number(id) } })
+        if (!producto) return NextResponse.json("Producto no encontrado", { status: 404 })
+        return NextResponse.json(producto)
+    }catch(error){
+        return NextResponse.json({error: `Ocurrió un error en el servidor, ${error}`}, {status: 500})
+    }
+}
+
 export async function PUT(
     req: Request,
     { params }: { params: Promise<{ id: string }> },
